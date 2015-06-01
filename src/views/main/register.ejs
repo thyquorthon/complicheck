@@ -1,0 +1,81 @@
+# TODO : ko register + redirect to login
+
+
+    <div class="register-box">
+      <div class="register-logo">
+        <b>Complicheck (WT)</b>
+      </div>
+
+      <div class="register-box-body">
+        <p class="login-box-msg"><%= __('new_membership') %></p>
+        <form action="#" method="post">
+          <div class="form-group has-feedback" data-bind="css: { error: name.hasError }">
+            <input id="name" type="text" class="form-control" placeholder="<%= __('company_name') %>" data-bind="value: name, valueUpdate: 'afterkeydown'"/>
+            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            <span data-bind='visible: name.hasError, text: name.validationMessage'>aa</span>
+          </div>        
+          <div class="form-group has-feedback">
+            <input id="fullname" type="text" class="form-control" placeholder="<%= __('full_name') %>" data-bind="value: fullname, valueUpdate: 'afterkeydown'"/>
+            <span class="glyphicon glyphicon-user form-control-feedback"></span>
+          </div>
+          <div class="form-group has-feedback">
+            <input id="email" type="email" class="form-control" placeholder="<%= __('email') %>" data-bind="value: email, valueUpdate: 'afterkeydown'"/>
+            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+          </div>
+          <div class="form-group has-feedback">
+            <input id="password" type="password" class="form-control" placeholder="<%= __('password') %>" data-bind="value: password, valueUpdate: 'afterkeydown'"/>
+            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+          </div>
+          <div class="form-group has-feedback">
+            <input id="retype_password" type="password" class="form-control" placeholder="<%= __('retype_password') %>" data-bind="value: retype_password, valueUpdate: 'afterkeydown'"/>
+            <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+          </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <button type="submit" class="btn btn-primary btn-block btn-flat"><%= __('register') %></button>
+            </div><!-- /.col -->
+          </div>
+        </form><br>
+        <a href="/" class="text-center"><%= __('already_have_membership') %></a>
+      </div><!-- /.form-box -->
+    </div><!-- /.register-box -->
+
+
+<script>
+// REGISTER VIEW MODEL
+
+// CONFIGURATION
+
+// DATAMODEL
+
+// REGISTER MODEL
+function RegisterModel() {
+    this.name = ko.observable();
+    this.fullname = ko.observable();
+    this.email = ko.observable();
+    this.password = ko.observable();
+    this.retype_password = ko.observable();
+}
+
+RegisterModel.prototype.register = function () {
+    var _this = this;    
+    //_this.isLoading(true);
+    var options = {
+        user: this.name(),
+        fullname: _this.fullname(),
+        email: _this.email(),
+        password: _this.password()
+    };
+
+    vm.comms.post('../register', options)
+        .done(function (data) {
+            console.log(data)
+            //_this.isLoading(false);
+        });
+};
+
+vm.registerVM = new RegisterModel();
+
+
+ko.applyBindings(vm.registerVM);
+</script>      

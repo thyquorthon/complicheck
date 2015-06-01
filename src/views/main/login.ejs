@@ -1,0 +1,35 @@
+# TODO : check for exisiting session cookie
+# TODO : ko login + redirect
+# TODO : remember me?
+    <div class="login-box">
+      <div class="login-logo">
+        <b>Complicheck (WT)</b>
+      </div><!-- /.login-logo -->
+      <div class="login-box-body">
+        <p class="login-box-msg"><%= __('sign_in_title') %></p>
+        <form action="#" method="post">
+          <div class="form-group has-feedback">
+            <input type="email" class="form-control" placeholder="<%= __('email') %>"/>
+            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+          </div>
+          <div class="form-group has-feedback">
+            <input type="password" class="form-control" placeholder="<%= __('password') %>"/>
+            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+          </div>
+          <div class="row">
+            <div class="col-xs-8">
+              <div class="checkbox">
+                <label>
+                  <input type="checkbox"> <%= __('remember_me') %>
+                </label>
+              </div>                        
+            </div><!-- /.col -->
+            <div class="col-xs-4">
+              <button type="submit" class="btn btn-primary btn-block btn-flat"><%= __('sign_in') %></button>
+            </div><!-- /.col -->
+          </div>
+        </form>
+        <a href="#"><%= __('forgot_password') %></a><br>
+        <a href="/signup" class="text-center"><%= __('new_membership') %></a>
+      </div><!-- /.login-box-body -->
+    </div><!-- /.login-box -->

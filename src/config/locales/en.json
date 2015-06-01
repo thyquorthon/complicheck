@@ -1,0 +1,15 @@
+{
+	"sign_in_title": "Sign in to start your session",
+	"email": "Email",
+	"password": "Password",
+	"retype_password": "Retype password",
+	"remember_me": "Remember Me",
+	"sign_in": "Sign In",
+	"forgot_password": "I forgot my password",
+	"new_membership": "Register a new membership",
+	"company_name": "Company name",
+	"full_name": "Full name",
+	"register": "Register",
+	"already_have_membership": "I already have a membership",
+	"required_field": "This field is required"
+}
