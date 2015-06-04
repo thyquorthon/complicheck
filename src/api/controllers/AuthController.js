@@ -79,13 +79,10 @@ function errorMessage(res, err, model){
 	var output = {};
 	if(err.ValidationError) {
 		Object.keys(err.ValidationError).forEach(function(field){
+            console.log(field);
 			output[field] = [];
-			err.ValidationError[field].forEach(function(error){
-				output[field].push(model.validationMessages[field]);
-			})
+			err.ValidationError[field].forEach(function(error){output[field].push(error);});
 		})
-		res.badRequest(output);
-	} else {res.send(err);}
-	
+        res.badRequest(output);
+	} else {res.send(err);}	
 }
-

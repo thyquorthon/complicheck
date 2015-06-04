@@ -6,76 +6,111 @@
         <b>Complicheck (WT)</b>
       </div>
 
-      <div class="register-box-body">
+      <div class="register-box-body" data-bind="visible: (!isLoading() && !isDone())">
         <p class="login-box-msg"><%= __('new_membership') %></p>
         <form action="#" method="post">
-          <div class="form-group has-feedback" data-bind="css: { error: name.hasError }">
-            <input id="name" type="text" class="form-control" placeholder="<%= __('company_name') %>" data-bind="value: name, valueUpdate: 'afterkeydown'"/>
-            <span class="glyphicon glyphicon-user form-control-feedback"></span>
-            <span data-bind='visible: name.hasError, text: name.validationMessage'>aa</span>
+          <div class="form-group has-feedback" data-bind="css: { 'has-error': (!name.isValid() && name.isModified())  }">
+            <input id="name" type="text" class="form-control" placeholder="<%= __('company_name') %>" data-bind="value: name, valueUpdate: 'afterkeydown'" />
+            <span class="fa fa-building-o form-control-feedback"></span>
           </div>        
-          <div class="form-group has-feedback">
+          <div class="form-group has-feedback" data-bind="css: { 'has-error': (!fullname.isValid() && fullname.isModified())  }">
             <input id="fullname" type="text" class="form-control" placeholder="<%= __('full_name') %>" data-bind="value: fullname, valueUpdate: 'afterkeydown'"/>
             <span class="glyphicon glyphicon-user form-control-feedback"></span>
           </div>
-          <div class="form-group has-feedback">
+          <div class="form-group has-feedback" data-bind="css: { 'has-error': (!email.isValid() && email.isModified())  }">
             <input id="email" type="email" class="form-control" placeholder="<%= __('email') %>" data-bind="value: email, valueUpdate: 'afterkeydown'"/>
             <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
           </div>
-          <div class="form-group has-feedback">
+          <div class="form-group has-feedback" data-bind="css: { 'has-error': (!password.isValid() && password.isModified())  }">
             <input id="password" type="password" class="form-control" placeholder="<%= __('password') %>" data-bind="value: password, valueUpdate: 'afterkeydown'"/>
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
           </div>
-          <div class="form-group has-feedback">
+          <div class="form-group has-feedback" data-bind="css: { 'has-error': (!retype_password.isValid() && retype_password.isModified()) }">
             <input id="retype_password" type="password" class="form-control" placeholder="<%= __('retype_password') %>" data-bind="value: retype_password, valueUpdate: 'afterkeydown'"/>
-            <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
+            <span class="fa fa-repeat form-control-feedback"></span>
           </div>
           <div class="row">
             <div class="col-xs-12">
-              <button type="submit" class="btn btn-primary btn-block btn-flat"><%= __('register') %></button>
+              <button type="button" class="btn btn-primary btn-block btn-flat" data-bind="click: register, disable: !validationModel.isValid()"><%= __('register') %></button>
             </div><!-- /.col -->
           </div>
         </form><br>
         <a href="/" class="text-center"><%= __('already_have_membership') %></a>
       </div><!-- /.form-box -->
+
+      <!-- LOADING -->
+      <div class="register-box-body" data-bind="visible: isLoading">
+        <div class="box box-danger">
+          <div class="box-header">
+            <h3 class="box-title"><%= __('registering') %></h3>
+          </div>
+          <!-- /.box-body -->
+          <!-- Loading -->
+          <div class="overlay">
+            <i class="fa fa-refresh fa-spin"></i>
+          </div>
+          <!-- end loading -->
+        </div><!-- /.box -->
+      </div>
+
+      <div class="register-box-body" data-bind="visible: isDone">
+            <%= __('register_message') %>
+      </div>
+
     </div><!-- /.register-box -->
 
 
 <script>
 // REGISTER VIEW MODEL
-
-// CONFIGURATION
-
-// DATAMODEL
-
-// REGISTER MODEL
 function RegisterModel() {
-    this.name = ko.observable();
-    this.fullname = ko.observable();
-    this.email = ko.observable();
-    this.password = ko.observable();
-    this.retype_password = ko.observable();
+    var self = this;
+
+    this.isLoading = ko.observable(false);
+    this.isDone = ko.observable(false);
+
+    this.name = ko.observable().extend({ required: true });
+    this.fullname = ko.observable().extend({ required: true });
+    this.email = ko.observable().extend({ required: true, email: true });
+    this.password = ko.observable().extend({ required: true });
+    this.retype_password = ko.observable().extend({required: true,  equal: this.password});
+
+    this.validationModel = ko.validatedObservable({
+      name: this.name,
+      fullname: this.fullname,
+      email: this.email,
+      password: this.password,
+      retype_password: this.retype_password
+    });
 }
+
+RegisterModel.prototype.matchPasswords = function () {
+  if ((this.password() != this.retype_password()) && this.retype_password.isModified() ) {
+    this.retype_password_error(true);
+  } else {this.retype_password_error(false);}
+};
 
 RegisterModel.prototype.register = function () {
     var _this = this;    
-    //_this.isLoading(true);
+    this.isLoading(true);
     var options = {
-        user: this.name(),
+        name: this.name(),
         fullname: _this.fullname(),
         email: _this.email(),
         password: _this.password()
     };
 
-    vm.comms.post('../register', options)
+    vm.comms.post('../register', JSON.stringify(options))
         .done(function (data) {
-            console.log(data)
-            //_this.isLoading(false);
+            _this.isLoading(false);
+            _this.isDone(true);
         });
 };
 
 vm.registerVM = new RegisterModel();
 
+$(document).ready(function () {
+    ko.validation.registerExtenders();
+    ko.applyBindings(vm.registerVM); //ko.applyBindings(new UserAccount(initdata), $("#UserAccount").get(0));
+});
 
-ko.applyBindings(vm.registerVM);
 </script>      

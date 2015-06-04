@@ -11,5 +11,8 @@
 	"full_name": "Full name",
 	"register": "Register",
 	"already_have_membership": "I already have a membership",
-	"required_field": "This field is required"
+	"required_field": "This field is required",
+	"registering": "Registering",
+	"registered": "Registration complete",
+	"register_message": "Registration Succeded!!"
 }
