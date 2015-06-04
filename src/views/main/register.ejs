@@ -1,6 +1,10 @@
-# TODO : ko register + redirect to login
-
-
+<pre>
+# TODO : No duplicate emails :S
+# TODO : Fix alertbox style
+# TODO : Localized Backend error messaages 
+# TODO : Step by step registration
+# TODO : GENERAL STYLING
+</pre>
     <div class="register-box">
       <div class="register-logo">
         <b>Complicheck (WT)</b>
@@ -55,6 +59,7 @@
 
       <div class="register-box-body" data-bind="visible: isDone">
             <%= __('register_message') %>
+            <br><a href='/'><%= __('sign_in') %></a>
       </div>
 
     </div><!-- /.register-box -->
