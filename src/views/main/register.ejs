@@ -1,7 +1,5 @@
 <pre>
-# TODO : No duplicate emails :S
 # TODO : Fix alertbox style
-# TODO : Localized Backend error messaages 
 # TODO : Step by step registration
 # TODO : GENERAL STYLING
 </pre>
@@ -35,7 +33,7 @@
           </div>
           <div class="row">
             <div class="col-xs-12">
-              <button type="button" class="btn btn-primary btn-block btn-flat" data-bind="click: register, disable: !validationModel.isValid()"><%= __('register') %></button>
+              <button type="button" class="btn btn-primary btn-block btn-flat" data-bind="click: register, disables: !validationModel.isValid()"><%= __('register') %></button>
             </div><!-- /.col -->
           </div>
         </form><br>
@@ -105,10 +103,8 @@ RegisterModel.prototype.register = function () {
     };
 
     vm.comms.post('../register', JSON.stringify(options))
-        .done(function (data) {
-            _this.isLoading(false);
-            _this.isDone(true);
-        });
+        .done(function (data) {_this.isDone(true);})
+        .always(function () {_this.isLoading(false);});
 };
 
 vm.registerVM = new RegisterModel();

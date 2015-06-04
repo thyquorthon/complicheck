@@ -14,5 +14,7 @@
 	"required_field": "This field is required",
 	"registering": "Registering",
 	"registered": "Registration complete",
-	"register_message": "Registration Succeded!!"
+	"register_message": "Registration Succeded!!",
+	"required": "Is mandatory",
+	"non_unique": "Already registered"
 }

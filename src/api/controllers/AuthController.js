@@ -47,12 +47,12 @@ module.exports = {
 		});
         // 1 -Create a new customer
         Customer.create(newCustomer).exec(function cb(err, createdC){
-			if(err){errorMessage(res, err, Customer); return;}
+			if(err){errorMessage(req, res, err, Customer); return;}
         	// 2 - create all group
         	// TODO: LOCALIZE NAME
         	var newGroup = {'name':'all','customer': createdC.id};
         	Group.create(newGroup).exec(function cb(err, createdG){
-				if(err){res.send(err); return;}
+				if(err){errorMessage(req, res, err, Group); return;}
 				// 3 - Create a ner user
 				var newUser = {};
         		Object.keys(User.attributes).forEach(function(key) {
@@ -62,7 +62,7 @@ module.exports = {
 				newUser['customer'] = createdC.id;
 				newUser['group'] = createdG.id;
 			   	User.create(newUser).exec(function cb(err, createdU){
-					if(err){res.send(err); return;}
+					if(err){errorMessage(req, res, err, User); return;}
 					res.send(createdU);
 	        		// end - User
     	    	});
@@ -75,14 +75,27 @@ module.exports = {
 
 };
 
-function errorMessage(res, err, model){
+function errorMessage(req, res, err, model){
 	var output = {};
+    var non_valid = ['string', 'email'];
+    // VALIDATION ERRORS
 	if(err.ValidationError) {
 		Object.keys(err.ValidationError).forEach(function(field){
-            console.log(field);
-			output[field] = [];
-			err.ValidationError[field].forEach(function(error){output[field].push(error);});
-		})
-        res.badRequest(output);
-	} else {res.send(err);}	
+			output[field] = []; 
+			err.ValidationError[field].forEach(function(error){
+                if(non_valid.indexOf(error.rule) == -1) output[field].push(req.__(error.rule));
+            });
+		})        
+	}
+    
+    // MONGO ERROR
+    // TODO : Find a more elegant way to do this.    
+    errorObj = JSON.parse(JSON.stringify(err)); 
+    if(errorObj.error == 'E_UNKNOWN' && errorObj.raw.name == 'MongoError') {
+        if (errorObj.raw.code == 11000) {         // DUPLICATED KEY ERROR
+            var field = errorObj.raw.message.split('.$')[1].split('_1')[0];
+            output[field] = []; output[field].push(req.__('non_unique'));
+        }
+    }    
+    if (Object.keys(output).length>0) { res.badRequest(output); } else {res.send(err);}	
 }

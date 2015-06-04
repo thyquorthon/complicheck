@@ -67,6 +67,32 @@ module.exports = {
         var obj = this.toObject();
         delete obj.password;
         return obj;
+  },
+
+  // VALIDATION MSGS
+  validationMessages: {
+    name: {
+        string: 'required',
+        required: 'required',
+        unique: 'non_unique'
+    },
+    email: {
+        string: 'required',
+        required: 'required',
+        unique: 'non_unique',
+    },
+    type: {
+        enum: 'required',
+        required: 'required'
+    },
+    password: {
+        string: 'required',
+        required: 'required'
+    },
+    status: {
+        string: 'required',
+        required: 'required'
+    }    
   }
 };
 

@@ -6,7 +6,15 @@
 */
 
 module.exports = {
+  // Custom validation types
+  uniqueEmail: false,
+    types: {
+        uniqueEmail: function(value) {
+            return uniqueEmail;
+        }
+    },
 
+  // ATTRIBUTES
   attributes: {
 	name: {
 	    type: 'string',
@@ -14,6 +22,11 @@ module.exports = {
     	required: true,
     	index: true
     },
+    email: {
+        type: 'email',
+        required: true,
+        unique: true
+    },      
     address: {
 	    type: 'string'
     },
@@ -33,12 +46,28 @@ module.exports = {
             via: 'customer'
         }
   },
+  
+  // LIFECYCLE
+  beforeValidate: function(values, cb) {
+    Customer.findOne({email: values.email}).exec(function (err, record) {
+        uniqueEmail = !err && !record;
+        cb();
+    });
+  },
 
+  // VALIDATION MSGS
   validationMessages: {
     name: {
-        required: 'email required',
-        unique: 'repeated name'
-    }
+        string: 'required',
+        required: 'required',
+        unique: 'non_unique'
+    },
+    email: {
+        string: 'required',
+        required: 'required',
+        unique: 'non_unique',
+        uniqueEmail: 'non_unique'
+    },
   }
 
 };

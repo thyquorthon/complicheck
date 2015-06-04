@@ -20,7 +20,15 @@ module.exports = {
     	collection: 'user',
     	via: 'groups'
     }
-  }
+  },
+
+  // VALIDATION MSGS
+  validationMessages: {
+    name: {
+        string: 'required',
+        required: 'required'
+    }
+  }  
   
 };
 
