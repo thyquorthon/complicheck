@@ -11,7 +11,8 @@ var vm = vm || {};
             "timeOut": "0",
             "extendedTimeOut": "0"
         };
-
+        // TODO : REMOVE THIS!!
+        console.log(jqXHR);
         if (jqXHR.responseJSON) toastr.error(objToList(jqXHR.responseJSON), "Error ocurred", errorOptions);
         else toastr.error("Please try again later", "Error ocurred", errorOptions);
     });
@@ -29,7 +30,7 @@ function objToList(obj){
     console.log(obj); // TODO : REMOVE
     var output = '';
     for (var key in obj){
-        output += '<b>' + key + '</b><ul>';
+        output += key + '<ul>';
         for(var elm in obj[key]){
             output += '<li>'+obj[key][elm]+'</li>';
         }

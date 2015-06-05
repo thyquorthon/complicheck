@@ -49,8 +49,7 @@ module.exports = {
         Customer.create(newCustomer).exec(function cb(err, createdC){
 			if(err){errorMessage(req, res, err, Customer); return;}
         	// 2 - create all group
-        	// TODO: LOCALIZE NAME
-        	var newGroup = {'name':'all','customer': createdC.id};
+        	var newGroup = {'name':req.__('all'),'customer': createdC.id};
         	Group.create(newGroup).exec(function cb(err, createdG){
 				if(err){errorMessage(req, res, err, Group); return;}
 				// 3 - Create a ner user
@@ -71,10 +70,9 @@ module.exports = {
   			// end - Customer
 		});
     }
-
-
 };
 
+// TODO : This has to be in another place
 function errorMessage(req, res, err, model){
 	var output = {};
     var non_valid = ['string', 'email'];

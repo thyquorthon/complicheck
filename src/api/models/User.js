@@ -51,6 +51,15 @@ module.exports = {
     	index: true
     }
   },
+
+  // LIFECYCLE
+  beforeValidate: function(values, cb) {
+    Customer.findOne({email: values.email}).exec(function (err, record) {
+        uniqueEmail = !err && !record;
+        cb();
+    });
+  },
+
   beforeCreate: function (user, cb) {
     bcrypt.genSalt(10, function(err, salt) {
         bcrypt.hash(user.password, salt, function(err, hash) {
@@ -63,6 +72,7 @@ module.exports = {
         });
     });
   },
+
   toJSON: function() {
         var obj = this.toObject();
         delete obj.password;
@@ -80,6 +90,7 @@ module.exports = {
         string: 'required',
         required: 'required',
         unique: 'non_unique',
+        uniqueEmail: 'non_unique'
     },
     type: {
         enum: 'required',

@@ -10,12 +10,12 @@
       <div class="login-box-body">
         <p class="login-box-msg"><%= __('sign_in_title') %></p>
         <form action="#" method="post">
-          <div class="form-group has-feedback">
-            <input type="email" class="form-control" placeholder="<%= __('email') %>"/>
+          <div class="form-group has-feedback" data-bind="css: { 'has-error': (!email.isValid() && email.isModified())  }">
+            <input id="email" type="email" class="form-control" placeholder="<%= __('email') %>" data-bind="value: email, valueUpdate: 'afterkeydown'"/>
             <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
           </div>
-          <div class="form-group has-feedback">
-            <input type="password" class="form-control" placeholder="<%= __('password') %>"/>
+          <div class="form-group has-feedback" data-bind="css: { 'has-error': (!password.isValid() && password.isModified())  }">
+            <input id="password" type="password" class="form-control" placeholder="<%= __('password') %>" data-bind="value: password, valueUpdate: 'afterkeydown'"/>
             <span class="glyphicon glyphicon-lock form-control-feedback"></span>
           </div>
           <div class="row">
@@ -27,7 +27,7 @@
               </div>                        
             </div><!-- /.col -->
             <div class="col-xs-4">
-              <button type="submit" class="btn btn-primary btn-block btn-flat"><%= __('sign_in') %></button>
+              <button type="button" class="btn btn-primary btn-block btn-flat" data-bind="click: login, disable: !validationModel.isValid()"><%= __('sign_in') %></button>
             </div><!-- /.col -->
           </div>
         </form>
@@ -35,3 +35,44 @@
         <a href="/signup" class="text-center"><%= __('new_membership') %></a>
       </div><!-- /.login-box-body -->
     </div><!-- /.login-box -->
+
+<script>
+// REGISTER VIEW MODEL
+function LoginModel() {
+    var self = this;
+
+    this.isLoading = ko.observable(false);
+    this.isDone = ko.observable(false);
+
+    this.email = ko.observable().extend({ required: true, email: true });
+    this.password = ko.observable().extend({ required: true });
+
+    this.validationModel = ko.validatedObservable({
+      email: this.email,
+      password: this.password
+    });
+}
+
+LoginModel.prototype.login = function () {
+    var _this = this;    
+    this.isLoading(true);
+    // TODO : password shouldnt travel!!
+    var options = {
+        email: _this.email(),
+        password: _this.password()
+    };
+
+    vm.comms.post('../login', JSON.stringify(options))
+        .done(function (data) {_this.isDone(true);})
+        .always(function () {_this.isLoading(false); 
+          console.log(document.cookie);});
+};
+
+vm.LoginModel = new LoginModel();
+
+$(document).ready(function () {
+    ko.validation.registerExtenders();
+    ko.applyBindings(vm.LoginModel); 
+});
+
+</script>
