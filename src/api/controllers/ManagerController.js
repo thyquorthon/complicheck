@@ -10,7 +10,7 @@ module.exports = {
    * `ManagerController.show()`
    */
   show: function (req, res) {
- 	if(req.user.type=='customer' || req.user.type=='admin') {res.view('manager/main');}
+ 	if(req.user.type=='customer' || req.user.type=='admin') {res.view('manager/main', { layout: 'manager/layout' });}
  	else {res.view('403');}
   },
 
