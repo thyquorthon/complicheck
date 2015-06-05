@@ -39,11 +39,7 @@ module.exports.routes = {
   '/signup': {
     view: 'main/register',
     locals: { layout: 'main/layout' }
-  },  
-  '/manager': {
-    view: 'manager/main',
-    locals: { layout: 'manager/layout' }
-  },   
+  },
 
   /***************************************************************************
   *                                                                          *
@@ -57,4 +53,5 @@ module.exports.routes = {
  'post /register': 'AuthController.register',
  'post /login': 'AuthController.login',
  'post /logout': 'AuthController.logout',
+ 'get /manager': 'ManagerController.show', 
 };

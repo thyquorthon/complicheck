@@ -17,14 +17,13 @@ module.exports = {
         passport.authenticate('local', function(err, user, info) {
             if ((err) || (!user)) {
                 return res.forbidden({
-                    message: req.__(info.message),
-                    user: user
+                    message: [req.__(info.message)]
                 });
             }
             req.logIn(user, function(err) {
                 if (err) res.send(err);
                 return res.send({
-                    message: req.__(info.message),
+                    message: [req.__(info.message)],
                     user: user
                 });
             });

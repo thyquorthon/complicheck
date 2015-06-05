@@ -27,14 +27,13 @@ var vm = vm || {};
 
 // TODO : Should be a way to do this with templates and KO
 function objToList(obj){
-    console.log(obj); // TODO : REMOVE
     var output = '';
     for (var key in obj){
-        output += key + '<ul>';
-        for(var elm in obj[key]){
-            output += '<li>'+obj[key][elm]+'</li>';
-        }
-        output += '</ul>';
+            output += key + '<ul>';
+            for(var elm in obj[key]){
+                output += '<li>'+obj[key][elm]+'</li>';
+            }
+            output += '</ul>';            
     }
     return output;
 }
