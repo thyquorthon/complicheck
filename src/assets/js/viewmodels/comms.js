@@ -19,7 +19,8 @@ var vm = vm || {};
                 dataType: "json",
                 data: data,
                 async: isAsync,
-                useBaseUrl: useBaseUrl
+                useBaseUrl: useBaseUrl,
+                xhrFields: { withCredentials: true}
             });
         },
         ajaxPost = function (method, data) {
@@ -30,7 +31,10 @@ var vm = vm || {};
                 type: "POST",
                 dataType: "json",
                 contentType: "application/json",
-                data: data
+                data: data,
+                xhrFields: {
+                   withCredentials: true
+                }
             });
         },
         ajaxPut = function (method, data) {
@@ -41,7 +45,10 @@ var vm = vm || {};
                 type: "PUT",
                 dataType: "json",
                 contentType: "application/json",
-                data: data
+                data: data,
+                xhrFields: {
+                   withCredentials: true
+                }
             });
         },
         concatUrl = function (method) {

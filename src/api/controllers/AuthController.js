@@ -16,15 +16,15 @@ module.exports = {
     login: function(req, res) {
         passport.authenticate('local', function(err, user, info) {
             if ((err) || (!user)) {
-                return res.send({
-                    message: info.message,
+                return res.forbidden({
+                    message: req.__(info.message),
                     user: user
                 });
             }
             req.logIn(user, function(err) {
                 if (err) res.send(err);
                 return res.send({
-                    message: info.message,
+                    message: req.__(info.message),
                     user: user
                 });
             });

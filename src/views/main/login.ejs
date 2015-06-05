@@ -63,9 +63,20 @@ LoginModel.prototype.login = function () {
     };
 
     vm.comms.post('../login', JSON.stringify(options))
-        .done(function (data) {_this.isDone(true);})
-        .always(function () {_this.isLoading(false); 
-          console.log(document.cookie);});
+        .done(function (data) {
+          console.log("1")
+          console.log(data)
+          if(data.user) {
+            toastr.success(data.message);
+          }
+          //_this.isDone(true);
+        })
+        .always(function () {
+          _this.isLoading(false);
+          console.log("2")
+          console.log(data)          
+          toastr.error(data.message);
+        });
 };
 
 vm.LoginModel = new LoginModel();
