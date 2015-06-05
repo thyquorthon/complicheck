@@ -30,6 +30,12 @@ module.exports.policies = {
   'Customer': {
     '*': 'isAuthenticated'
   },
+  'Group': {
+    '*': 'isAuthenticated'
+  },
+  'User': {
+    '*': 'isAuthenticated'
+  },
 
   /***************************************************************************
   *                                                                          *

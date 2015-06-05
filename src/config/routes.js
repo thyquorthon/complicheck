@@ -40,6 +40,10 @@ module.exports.routes = {
     view: 'main/register',
     locals: { layout: 'main/layout' }
   },  
+  '/manager': {
+    view: 'manager/main',
+    locals: { layout: 'manager/layout' }
+  },   
 
   /***************************************************************************
   *                                                                          *
