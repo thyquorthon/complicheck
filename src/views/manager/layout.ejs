@@ -48,7 +48,7 @@
     <![endif]-->      
   </head>
 
-  <body class="skin-blue sidebar-collapse sidebar-mini">
+  <body class="skin-blue sidebar-mini" data-bind="css: {'sidebar-collapse': sidebarStatus}">
     <!--
         Client-side Templates
         ========================
@@ -97,7 +97,6 @@
           + Use a different preprocessor, like TypeScript
 
     -->
-    <%- body %>
     <!--SCRIPTS-->
     <script src="/js/dependencies/sails.io.js"></script>
     <script src="/js/jquery/jquery.min.js"></script>
@@ -113,5 +112,6 @@
     <script src="/js/viewmodels/comms.js"></script>
     <script src="/js/viewmodels/configuration.js"></script>
     <!--SCRIPTS END-->     
+    <%- body %>    
   </body>
 </html>
